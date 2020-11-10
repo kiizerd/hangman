@@ -1,5 +1,5 @@
 #!/usr/local/bin/ruby -w
-require 'pry'
+
 require_relative 'game.rb'
 
 class Hangman
