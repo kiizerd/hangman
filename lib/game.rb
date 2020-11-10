@@ -33,12 +33,10 @@ class Game
     end
     arr = []
     word.split('').each do |i|
-      p i
       unless i == "\n" || i == "\r"
         arr << i
       end
     end
-    p arr.join
     word = arr.join.downcase
   end
 
