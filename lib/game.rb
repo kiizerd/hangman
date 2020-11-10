@@ -85,7 +85,9 @@ class Game
     puts '..saving..'
     time = Time.now
     save_time = "#{time.month}#{time.day}"
-    saves_dir = Dir.new('./saves')
+    unless Dir.exists?('./saves')
+      Dir.mkdir('./saves')
+    end
     save_file = File.open("./saves/#{save_time}.txt", 'w')
     serialized_object = Marshal.dump(self)
     save_file.write serialized_object
