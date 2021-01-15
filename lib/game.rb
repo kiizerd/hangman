@@ -18,7 +18,9 @@ class Game
   def initialize(name)
     @name = name
     @word = get_word
+    @wordAry = @word.chars
     @guesses = difficulty
+    @guessed = []
     @remaining = @word.length
     @player = Player.new(self)
     @display = Display.new(@word, @guesses)
@@ -33,12 +35,10 @@ class Game
     end
     arr = []
     word.split('').each do |i|
-      p i
       unless i == "\n" || i == "\r"
         arr << i
       end
     end
-    p arr.join
     word = arr.join.downcase
   end
 
@@ -48,21 +48,27 @@ class Game
   end
 
   def feedback(letter)
-    if @word.include? letter
-      if @word.split('').count(letter) > 1
-        matches = @word.split('').map.with_index do |i, idx|
-          idx if i == letter
-        end.compact
-        @display.update(letter, matches)
-        @remaining -= matches.length
-      else  
-        @display.update(letter)
-        @remaining -= 1
-      end
+    while @guessed.include? letter
+        puts "Error, letter already entered. Try again"
+        letter = gets.chomp
+    end
+    if @wordAry.include? letter
+        if @wordAry.count(letter) > 1
+            matches = @wordAry.map.with_index do |i, idx|
+                idx if i == letter
+            end.compact
+            @display.update(letter, matches)
+            @remaining -= matches.length
+        else  
+            @display.update(letter)
+            @wordAry.delete(letter)
+            @remaining -= 1
+        end
     else
-      @display.update(false, letter)
-      @guesses -= 1
+        @display.update(false, letter)
+        @guesses -= 1
     end    
+    @guessed << letter
   end
   
   def play_game
